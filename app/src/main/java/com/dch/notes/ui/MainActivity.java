@@ -1,7 +1,10 @@
-package com.dch.notes;
+package com.dch.notes.ui;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -9,9 +12,14 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
 
+import com.dch.notes.BaseApplication;
+import com.dch.notes.R;
 import com.dch.notes.db.NoteDatabase;
+import com.dch.notes.model.Note;
+import com.dch.notes.viewmodel.NotesListViewModel;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     FloatingActionButton fab;
 
     private NoteDatabase note_db;
+    private NoteListAdapter noteListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,9 +59,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initData() {
-        note_db = BaseApplication.getInstance().getNote_db();
-        note_db.noteDao().getAllNotes().observe(this, notes -> {
+        NotesListViewModel notesListViewModel = ViewModelProviders.of(this).get(NotesListViewModel.class);
+        subscribeUi(notesListViewModel);
 
+        noteListAdapter = new NoteListAdapter(note -> {
+            Snackbar.make(fab,note.id+": "+note.content,Snackbar.LENGTH_SHORT).show();
+        });
+        rvHome.setAdapter(noteListAdapter);
+    }
+
+    private void subscribeUi(NotesListViewModel viewModel) {
+        viewModel.getNotes().observe(this,
+                notes->{
+                    if (notes != null){
+                        noteListAdapter.notifyDataSetChanged();
+                    }
         });
     }
 

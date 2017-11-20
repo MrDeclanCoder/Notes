@@ -1,12 +1,10 @@
-package com.dch.notes.entity;
+package com.dch.notes.model;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 
-import java.util.Date;
-
-import static com.dch.notes.entity.Note.TABLE_NAME;
+import static com.dch.notes.model.Note.TABLE_NAME;
 
 /**
  * 作者：MrCoder on 2017/11/14 0014 17:48
@@ -17,6 +15,7 @@ import static com.dch.notes.entity.Note.TABLE_NAME;
 public class Note {
 
     public static final String TABLE_NAME = "notes";
+    public static final String DB_NAME = "note_db";
 
     @PrimaryKey
     public int id;
@@ -27,8 +26,7 @@ public class Note {
     @ColumnInfo(name = "date")
     public String date;
 
-    public Note(int id, String content, String date){
-        this.id = id;
+    public Note(String content, String date){
         this.content = content;
         this.date = date;
     }

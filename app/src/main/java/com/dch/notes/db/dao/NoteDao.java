@@ -1,4 +1,4 @@
-package com.dch.notes.dao;
+package com.dch.notes.db.dao;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
@@ -7,7 +7,7 @@ import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 
-import com.dch.notes.entity.Note;
+import com.dch.notes.model.Note;
 
 import java.util.List;
 
@@ -23,6 +23,9 @@ public interface NoteDao {
 
     @Query("SELECT * FROM "+Note.TABLE_NAME)
     LiveData<List<Note>> getAllNotes();
+
+    @Query("SELECT * FROM "+Note.TABLE_NAME + " WHERE id = :noteId")
+    LiveData<Note> loadNote(final int noteId);
 
     @Insert(onConflict = REPLACE)
     void addNote(Note note);

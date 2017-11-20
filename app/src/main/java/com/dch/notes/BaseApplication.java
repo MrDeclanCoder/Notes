@@ -12,21 +12,26 @@ import com.dch.notes.db.NoteDatabase;
  */
 public class BaseApplication extends MultiDexApplication {
 
-    private NoteDatabase note_db;
     private static BaseApplication mInstance;
+    private AppExecutors mAppExcutors;
 
     @Override
     public void onCreate() {
         super.onCreate();
         mInstance = this;
-        note_db = Room.databaseBuilder(getApplicationContext(), NoteDatabase.class, "note_db").build();
+
+        mAppExcutors = new AppExecutors();
     }
 
     public static BaseApplication getInstance(){
         return mInstance;
     }
 
-    public NoteDatabase getNote_db() {
-        return note_db;
+    public NoteDatabase getDataBase() {
+        return NoteDatabase.getInstance(this,mAppExcutors);
+    }
+
+    public DataRepository getRepository(){
+        return DataRepository.getInstance(getDataBase());
     }
 }
