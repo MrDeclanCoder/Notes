@@ -5,4 +5,7 @@
     <color name="colorAccent">#FF4081</color>
 
     <color name="cardview_light_background">#d6d6d6</color>
+
+    <color name="grey">#AAAAAA</color>
+    <color name="white">#FFFFFF</color>
 </resources>

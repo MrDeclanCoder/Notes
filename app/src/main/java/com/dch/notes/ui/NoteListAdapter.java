@@ -1,6 +1,5 @@
 package com.dch.notes.ui;
 
-import android.databinding.DataBindingComponent;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.support.annotation.Nullable;
@@ -12,6 +11,7 @@ import android.view.ViewGroup;
 
 import com.dch.notes.BR;
 import com.dch.notes.R;
+import com.dch.notes.databinding.NoteItemBinding;
 import com.dch.notes.model.Note;
 
 import java.util.List;
@@ -31,7 +31,7 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.NoteVi
         this.mClickCallback = clickCallback;
     }
 
-    public void setmNoteList(final List<? extends Note> notes) {
+    public void setNoteList(final List<? extends Note> notes) {
         if (mNoteList == null) {
             this.mNoteList = notes;
             notifyItemRangeInserted(0, notes.size());
@@ -66,15 +66,14 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.NoteVi
 
     @Override
     public NoteViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        ViewDataBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.note_item, parent, false);
-//        binding.setCallback(mClickCallback);
+        NoteItemBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.note_item, parent, false);
+        binding.setCallback(mClickCallback);
         return new NoteViewHolder(binding);
     }
 
     @Override
     public void onBindViewHolder(NoteViewHolder holder, int position) {
-//        holder.binding.setNote(mNoteList.get(position));
-        holder.binding.setVariable(BR.note,mNoteList.get(position));
+        holder.binding.setNote(mNoteList.get(position));
         holder.binding.executePendingBindings();
     }
 
@@ -85,60 +84,12 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.NoteVi
 
     static class NoteViewHolder extends RecyclerView.ViewHolder {
 
-        final ViewDataBinding binding;
+        final NoteItemBinding binding;
 
-        public NoteViewHolder(ViewDataBinding binding) {
+        public NoteViewHolder(NoteItemBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }
     }
 
-    class NoteViewBinding extends ViewDataBinding{
-
-        private NoteClickCallback callback;
-        private Note note;
-
-        /**
-         * @param bindingComponent
-         * @param root
-         * @param localFieldCount
-         * @hide
-         */
-        protected NoteViewBinding(android.databinding.DataBindingComponent bindingComponent, View root, int localFieldCount) {
-            super(bindingComponent, root, localFieldCount);
-        }
-
-        @Override
-        protected boolean onFieldChange(int localFieldId, Object object, int fieldId) {
-            return false;
-        }
-
-        @Override
-        public boolean setVariable(int variableId, Object value) {
-            return false;
-        }
-
-        @Override
-        protected void executeBindings() {
-        }
-
-        @Override
-        public void invalidateAll() {
-
-        }
-
-        @Override
-        public boolean hasPendingBindings() {
-            return false;
-        }
-
-        public void setCallback(NoteClickCallback callback) {
-            this.callback = callback;
-        }
-
-        public void setNote(Note note) {
-            this.note = note;
-
-        }
-    }
 }

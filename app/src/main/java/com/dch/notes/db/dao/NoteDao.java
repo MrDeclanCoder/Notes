@@ -27,7 +27,7 @@ public interface NoteDao {
     @Query("SELECT * FROM "+Note.TABLE_NAME + " WHERE id = :noteId")
     LiveData<Note> loadNote(final int noteId);
 
-    @Insert(onConflict = REPLACE)
+    @Insert
     void addNote(Note note);
 
     @Delete

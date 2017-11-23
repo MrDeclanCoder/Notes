@@ -1,5 +1,7 @@
 package com.dch.notes.ui;
 
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -12,12 +14,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 
+import com.dch.notes.AppExecutors;
 import com.dch.notes.BaseApplication;
+import com.dch.notes.DataRepository;
 import com.dch.notes.R;
+import com.dch.notes.db.NoteDatabase;
+import com.dch.notes.db.dao.NoteDao;
 import com.dch.notes.model.Note;
+import com.dch.notes.viewmodel.NotesListViewModel;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -45,30 +53,34 @@ public class EditNoteActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_note_edit);
         ButterKnife.bind(this);
-        handler = new Handler(){
+
+        handler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
-                Snackbar.make(toolbar,"已存储", BaseTransientBottomBar.LENGTH_SHORT).show();
+                Snackbar.make(toolbar, "已存储", BaseTransientBottomBar.LENGTH_SHORT).show();
                 etAddNote.setText("");
             }
         };
-        fabSaveNote.setOnClickListener(view->{
+
+        fabSaveNote.setOnClickListener(view -> {
             text = etAddNote.getText().toString().trim();
-            if (TextUtils.isEmpty(text)){
-                Snackbar.make(view,"请输入内容",Snackbar.LENGTH_SHORT).show();
+            if (TextUtils.isEmpty(text)) {
+                Snackbar.make(view, "请输入内容", Snackbar.LENGTH_SHORT).show();
                 return;
             }
-            new Thread(){
-                @Override
-                public void run() {
-                    Date date = new Date();
-                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                    String format = simpleDateFormat.format(date);
-                    Note note = new Note(text, format);
-                    BaseApplication.getInstance().getNote_db().noteDao().addNote(note);
+            Date date = new Date();
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String format = simpleDateFormat.format(date);
+            Note note = new Note(text, format);
+            NoteDatabase dataBase = BaseApplication.getInstance().getDataBase();
+            new AppExecutors().diskIO().execute(()->{
+                dataBase.runInTransaction(() -> {
+                    List<Note> value = dataBase.noteDao().getAllNotes().getValue();
+                    note.id = value.size();
+                    dataBase.noteDao().addNote(note);
                     handler.sendEmptyMessage(0);
-                }
-            }.start();
+                });
+            });
         });
     }
 }

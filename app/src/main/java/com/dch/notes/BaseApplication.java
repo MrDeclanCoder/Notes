@@ -19,7 +19,6 @@ public class BaseApplication extends MultiDexApplication {
     public void onCreate() {
         super.onCreate();
         mInstance = this;
-
         mAppExcutors = new AppExecutors();
     }
 
