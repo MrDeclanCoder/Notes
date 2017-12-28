@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_news"
+        android:enabled="true"
+        android:icon="@mipmap/ic_livefilter_lifestyle"
+        android:title="@string/home_bottom_menu_tab1"
+        app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/action_photo"
+        android:enabled="true"
+        android:icon="@mipmap/ic_livefilter_occupation"
+        android:title="@string/home_bottom_menu_tab2"
+        app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/action_video"
+        android:enabled="true"
+        android:icon="@mipmap/ic_livefilter_reade_write"
+        android:title="@string/home_bottom_menu_tab3"
+        app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/action_media"
+        android:enabled="true"
+        android:icon="@mipmap/ic_menu_pay_zhwallet"
+        android:title="@string/home_bottom_menu_tab4"
+        app:showAsAction="ifRoom"/>
+</menu>

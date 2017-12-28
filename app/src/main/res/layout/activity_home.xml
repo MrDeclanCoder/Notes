@@ -11,7 +11,7 @@
         android:layout_height="0dp"
         android:layout_weight="100"
         tools:targetApi="21"
-        android:background="?android:selectableItemBackgroundBorderless"
+        android:foreground="?android:selectableItemBackgroundBorderless"
         android:orientation="vertical">
 
     </RelativeLayout>

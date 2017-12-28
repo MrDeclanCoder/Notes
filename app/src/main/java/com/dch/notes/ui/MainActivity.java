@@ -4,6 +4,8 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -17,6 +19,7 @@ import com.dch.notes.R;
 import com.dch.notes.databinding.ActivityMainBinding;
 import com.dch.notes.db.NoteDatabase;
 import com.dch.notes.viewmodel.NotesListViewModel;
+import com.dch.notes.widget.BottomNavigationViewHelper;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -36,6 +39,11 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView rvHome;
     @BindView(R.id.fab)
     FloatingActionButton fab;
+    @BindView(R.id.bottom_navigation)
+    BottomNavigationView mBottomNavigation;
+    @BindView(R.id.home_container)
+    CoordinatorLayout mCoordinatorLayout;
+
 
     private NoteDatabase note_db;
     private NoteListAdapter noteListAdapter;
@@ -47,8 +55,10 @@ public class MainActivity extends AppCompatActivity {
         viewDataBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
+        BottomNavigationViewHelper.disableShiftMode(mBottomNavigation);
+
         fab.setOnClickListener(view ->
-                Snackbar.make(view, "添加新的记录", Snackbar.LENGTH_LONG)
+                Snackbar.make(mCoordinatorLayout, "添加新的记录", Snackbar.LENGTH_LONG)
                         .setAction("添加", vieww ->
                                 startActivity(new Intent(MainActivity.this, EditNoteActivity.class))
                         ).show()

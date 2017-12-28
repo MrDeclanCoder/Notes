@@ -17,7 +17,7 @@ public class Note {
     public static final String TABLE_NAME = "notes";
     public static final String DB_NAME = "note_db";
 
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     public int id;
 
     @ColumnInfo(name = "content")
