@@ -58,10 +58,13 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationViewHelper.disableShiftMode(mBottomNavigation);
 
         fab.setOnClickListener(view ->
-                Snackbar.make(mCoordinatorLayout, "添加新的记录", Snackbar.LENGTH_LONG)
-                        .setAction("添加", vieww ->
-                                startActivity(new Intent(MainActivity.this, EditNoteActivity.class))
-                        ).show()
+                startActivity(new Intent(MainActivity.this,TestActivity.class))
+
+
+//                Snackbar.make(mCoordinatorLayout, "添加新的记录", Snackbar.LENGTH_LONG)
+//                        .setAction("添加", vieww ->
+//                                startActivity(new Intent(MainActivity.this, EditNoteActivity.class))
+//                        ).show()
         );
         initData();
         mSwipeRefreshLayout.setOnRefreshListener(() -> {

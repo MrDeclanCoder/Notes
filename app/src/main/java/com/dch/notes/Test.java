@@ -8,4 +8,5 @@ package com.dch.notes;
 public class Test {
 
     public String testStr;
+
 }
